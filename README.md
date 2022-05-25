@@ -1,2 +1,1 @@
-# 10-Team-Profile-Generator
-Object-Oriented Programming
+## TEAM PROFILE GENERATOR
