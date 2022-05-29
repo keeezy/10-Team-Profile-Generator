@@ -126,18 +126,51 @@ function addIntern() {
         },
         {
             type: "input",
-            name: "internGitHub",
-            message: "what is the intern's Github?",
+            name: "internSchool",
+            message: "what is the intern's School name?",
         },
     ]).then((answers) => {
         const intern = new Intern (
             answers.internName,
             answers.internId,
             answers.internEmail,
-            answers.intern.GitHub);
+            answers.intern.internSchool);
 
         employeeArr.push(intern)
     })
 }
+
+function createCard(employee) {
+    return `
+        <div class= "card"> 
+            <h3>${employee.name}</h3>
+            <h4>${employee.role}</h4>
+            
+            <p>${employee.id}</p>
+            <p>${employee.email}</p>
+            <p>${employee.officeNumber || employee.GitHub || employee.school}</p>
+        </div>
+    `
+}
+
+// Creates html doc
+function createHtml() {
+    return `
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+    ${employeeArr.map(createCard)}
+</html>
+    `;
+}
+fs.writeFileSynce("/dist/index.html", createHtml())
 
 init();
