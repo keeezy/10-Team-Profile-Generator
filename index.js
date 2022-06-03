@@ -1,9 +1,11 @@
 const fs = require("fs");
 const inquirer = require("inquirer");
-const Manager = require("./lib/Manager");
-const Employee = require("./lib/Employee");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
+const createTeam = require("./dist/createTeam.js");
+const Manager = require("./lib/Manager.js");
+const Employee = require("./lib/Employee.js");
+const Engineer = require("./lib/Engineer.js");
+const Intern = require("./lib/Intern.js");
+
 
 
 
@@ -55,20 +57,21 @@ function addMoreEmployees() {
     inquirer.prompt([
         {
             type: "list",
-            name: "whatToDO",
-            message: "What is the team manage's office number?",
+            name: "choices",
+            message: "Did you want to add more employees?",
             choices: ["New Engineer", "New Intern", "Exit"]
         }
-    ]).then((answer) => {
-        switch (answer.whatToDo) {
+    ]).then((answers) => {
+        switch (answers.choices) {
             case "New Engineer":
                 addEngineer();
                 break;
             case "New Intern":
                 addIntern();
-                break
-            default:
-                exit()
+                break;
+            case "No additional employees":
+                generateTeam();
+                break;
         }
     })
 }
@@ -101,9 +104,11 @@ function addEngineer() {
             answers.engineerName,
             answers.engineerId,
             answers.engineerEmail,
-            answers.engineer.GitHub);
+            answers.engineerGithub,
+            );
 
-        employeeArr.push(engineer)
+        employeeArr.push(engineer);
+        addMoreEmployees();
     })
 }
 
@@ -135,10 +140,16 @@ function addIntern() {
             answers.internName,
             answers.internId,
             answers.internEmail,
-            answers.intern.internSchool);
+            answers.internSchool
+            );
 
-        employeeArr.push(intern)
+        employeeArr.push(intern);
+        addMoreEmployees();
     })
+}
+
+function generateTeam() {
+    createTeam(employeeArr);
 }
 
 function createCard(employee) {
